@@ -1,46 +1,67 @@
-# Getting Started with Create React App
+# Design Patterns Demo - Todo Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a Todo application that demonstrates various design patterns. It shows how design patterns can be used to create a maintainable, scalable, and robust application.
 
-## Available Scripts
+## Design Patterns Implemented
 
-In the project directory, you can run:
+### Creational Patterns
 
-### `npm start`
+- **Factory Pattern** (`TodoFactory.ts`): Creates different types of Todo items with different properties, allowing for centralized object creation.
+- **Singleton Pattern** (`TodoStore.ts`): Ensures only one instance of the TodoStore exists throughout the application.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Structural Patterns
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- **Adapter Pattern** (`TodoAdapter.ts`): Converts between the application's internal Todo format and external Todo formats.
+- **Decorator Pattern** (`TodoDecorator.ts`): Dynamically adds additional functionality to Todo items, like due dates and tags.
+- **Facade Pattern** (`TodoService.ts`): Provides a simplified interface to the complex subsystems of the application.
 
-### `npm test`
+### Behavioral Patterns
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Observer Pattern** (`TodoObserver.ts`): Defines a subscription mechanism to notify subscribers about changes to Todo items.
+- **Strategy Pattern** (`TodoStrategy.ts`): Defines a family of algorithms for filtering Todo items and makes them interchangeable.
+- **Command Pattern** (`TodoCommand.ts`): Encapsulates Todo operations as objects, enabling undo/redo functionality.
 
-### `npm run build`
+## How to Run
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Clone the repository
+2. Install dependencies with `npm install`
+3. Run the application with `npm start`
+4. Open [http://localhost:3000](http://localhost:3000) to view it in the browser
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Project Structure
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- `src/patterns/creational`: Contains creational design patterns
+- `src/patterns/structural`: Contains structural design patterns
+- `src/patterns/behavioral`: Contains behavioral design patterns
+- `src/models`: Contains data models
+- `src/components`: Contains React components
+- `src/services`: Contains service classes that use the design patterns
 
-### `npm run eject`
+## Features
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Create, read, update, and delete Todo items
+- Filter Todo items by status, priority
+- Add tags to Todo items
+- Set due dates for Todo items
+- Undo/Redo operations
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Design Pattern Interactions
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+This application demonstrates how design patterns can work together to create a well-structured application:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+1. The **Factory Pattern** creates Todo objects
+2. The **Singleton Pattern** ensures a single instance of the Todo store
+3. The **Decorator Pattern** adds additional functionality to Todo items
+4. The **Observer Pattern** notifies components when Todos change
+5. The **Command Pattern** enables undo/redo functionality
+6. The **Strategy Pattern** provides different filtering strategies
+7. The **Adapter Pattern** allows for data conversion
+8. The **Facade Pattern** (TodoService) simplifies the complex subsystems
 
-## Learn More
+## Testing
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Run tests with `npm test`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Contributions
+
+This project is designed for educational purposes to demonstrate design patterns in a real-world application.
