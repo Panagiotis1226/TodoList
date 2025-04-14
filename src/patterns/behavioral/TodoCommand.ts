@@ -5,8 +5,8 @@ import { TodoStore } from '../creational/TodoStore';
 
 // Command Interface
 export interface Command {
-  execute(): void;
-  undo(): void;
+  execute(): Promise<void>;
+  undo(): Promise<void>;
 }
 
 // Concrete Commands
@@ -19,12 +19,12 @@ export class AddTodoCommand implements Command {
     this.todoStore = todoStore;
   }
 
-  execute(): void {
-    this.todoStore.addTodo(this.todo);
+  async execute(): Promise<void> {
+    await this.todoStore.addTodo(this.todo);
   }
 
-  undo(): void {
-    this.todoStore.deleteTodo(this.todo.id);
+  async undo(): Promise<void> {
+    await this.todoStore.deleteTodo(this.todo.id);
   }
 }
 
@@ -37,16 +37,15 @@ export class UpdateTodoCommand implements Command {
     this.newTodo = newTodo;
     this.todoStore = todoStore;
     // Store the old state for undo operations
-    const oldTodoObj = this.todoStore.getTodoById(newTodo.id);
-    this.oldTodo = oldTodoObj ? { ...oldTodoObj } : { ...newTodo };
+    this.oldTodo = { ...newTodo };
   }
 
-  execute(): void {
-    this.todoStore.updateTodo(this.newTodo);
+  async execute(): Promise<void> {
+    await this.todoStore.updateTodo(this.newTodo);
   }
 
-  undo(): void {
-    this.todoStore.updateTodo(this.oldTodo);
+  async undo(): Promise<void> {
+    await this.todoStore.updateTodo(this.oldTodo);
   }
 }
 
@@ -55,20 +54,28 @@ export class DeleteTodoCommand implements Command {
   private todoStore: TodoStore;
 
   constructor(todoId: string, todoStore: TodoStore = TodoStore.getInstance()) {
-    const todo = todoStore.getTodoById(todoId);
+    this.todoStore = todoStore;
+    // We'll get the todo in execute() since it's async
+    this.todo = {
+      id: todoId,
+      title: '',
+      completed: false,
+      createdAt: new Date(),
+      priority: 'medium'
+    };
+  }
+
+  async execute(): Promise<void> {
+    const todo = await this.todoStore.getTodoById(this.todo.id);
     if (!todo) {
-      throw new Error(`Todo with id ${todoId} not found`);
+      throw new Error(`Todo with id ${this.todo.id} not found`);
     }
     this.todo = { ...todo }; // Store a copy for undo
-    this.todoStore = todoStore;
+    await this.todoStore.deleteTodo(this.todo.id);
   }
 
-  execute(): void {
-    this.todoStore.deleteTodo(this.todo.id);
-  }
-
-  undo(): void {
-    this.todoStore.addTodo(this.todo);
+  async undo(): Promise<void> {
+    await this.todoStore.addTodo(this.todo);
   }
 }
 
@@ -77,30 +84,30 @@ export class CommandManager {
   private history: Command[] = [];
   private undoneCommands: Command[] = [];
 
-  execute(command: Command): void {
-    command.execute();
+  async execute(command: Command): Promise<void> {
+    await command.execute();
     this.history.push(command);
     // Clear the undone commands since we're now on a new path
     this.undoneCommands = [];
   }
 
-  undo(): void {
+  async undo(): Promise<void> {
     if (this.history.length === 0) {
       return;
     }
 
     const command = this.history.pop()!;
-    command.undo();
+    await command.undo();
     this.undoneCommands.push(command);
   }
 
-  redo(): void {
+  async redo(): Promise<void> {
     if (this.undoneCommands.length === 0) {
       return;
     }
 
     const command = this.undoneCommands.pop()!;
-    command.execute();
+    await command.execute();
     this.history.push(command);
   }
 
