@@ -10,7 +10,7 @@ function App() {
       <Container maxWidth="lg">
         <Box sx={{ my: 4 }}>
           <Typography variant="h4" component="h1" align="center" gutterBottom>
-            Design Patterns Demo - Todo Application
+            Todo Application
           </Typography>
           <Typography variant="subtitle1" align="center" color="text.secondary" paragraph>
             This application demonstrates various design patterns including Creational, Structural, and Behavioral patterns.

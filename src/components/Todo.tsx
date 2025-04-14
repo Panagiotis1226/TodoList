@@ -159,7 +159,7 @@ const TodoList: React.FC = () => {
   return (
     <Box sx={{ maxWidth: 800, margin: '0 auto', p: 3 }}>
       <Typography variant="h4" gutterBottom>
-        Todo List - Design Patterns Demo
+        Todo List
       </Typography>
       
       {/* Filter controls */}
